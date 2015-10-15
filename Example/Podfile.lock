@@ -1,0 +1,14 @@
+PODS:
+  - RecyclingCenter (0.0.1)
+
+DEPENDENCIES:
+  - RecyclingCenter (from `../`)
+
+EXTERNAL SOURCES:
+  RecyclingCenter:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  RecyclingCenter: e98abba2fc0c2b6f120995f0c02d4d5847122f2e
+
+COCOAPODS: 0.39.0
