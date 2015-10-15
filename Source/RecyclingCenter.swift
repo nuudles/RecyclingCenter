@@ -53,7 +53,7 @@ public class RecyclingCenter<T: Recyclable>
 		unusedRecyclables[reuseIdentifier] = nil
 	}
 
-	public func dequeueObjectWithReuseIdentifier(reuseIdentifier: String, context: Any?) -> RecyclableType
+	public func dequeueObjectWithReuseIdentifier(reuseIdentifier: String, context: Any? = nil) -> RecyclableType
 	{
 		guard unusedRecyclables[reuseIdentifier] != nil else { fatalError("Unknown reuseIdentifier: \(reuseIdentifier)") }
 		if let object = unusedRecyclables[reuseIdentifier]!.popFirst()
