@@ -47,7 +47,7 @@ public class RecyclingCenter<T: Recyclable>
 		unusedRecyclables[reuseIdentifier] = Set<RecyclableType>()
 	}
 
-	public func unregisterInitHandlerForReuseIdentifier(reuseIdentifier: String)
+	public func deregisterInitHandlerForReuseIdentifier(reuseIdentifier: String)
 	{
 		initHandlers[reuseIdentifier] = nil
 		unusedRecyclables[reuseIdentifier] = nil
