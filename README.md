@@ -40,20 +40,20 @@ $ pod install
 
 You will need to have a `RecyclingCenter` for each kind of `Recyclable` class you want to use. Simply initialize a center and register an `initHandler` for your `reuseIdentifier`:
 
-```
+```swift
 let recyclingCenter = RecyclingCenter<RecyclableView>()
 recyclingCenter.registerInitHandler({ (_) in return RecyclableView(color: .redColor()) }, forReuseIdentifier: ViewController.redReuseIdentifier)
 ```
 
 Later when you want to dequeue a `Recyclable` object by calling:
 
-```
+```swift
 let redView = recyclingCenter.dequeueObjectWithReuseIdentifier(ViewController.redReuseIdentifier, context: nil)
 ```
 
 When you want to recycle a view, simply enqueue it:
 
-```
+```swift
 recyclingCenter.enqueueObject(redView, withReuseIdentifier: ViewController.redReuseIdentifier)
 ```
 
