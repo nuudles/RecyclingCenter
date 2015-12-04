@@ -1,5 +1,9 @@
 # RecyclingCenter
 
+<a href="https://github.com/Carthage/Carthage/issues/179">
+    <img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" align="right" vspace="2px">
+</a>
+
 `RecyclingCenter` is a simple manager that handles dequeuing and enqueuing reused objects. It works similar to how `UITableView` and `UICollectionView` dequeue their cells. Instead of registering a class, you register an `initHandler` closure, which returns your `Recyclable` class.
 
 ## Features
@@ -34,6 +38,14 @@ Then, run the following command:
 
 ```bash
 $ pod install
+```
+
+## Installation using Carthage
+
+Add this to your `Cartfile`:
+
+```
+github "nuudles/RecyclingCenter"
 ```
 
 ## Usage
