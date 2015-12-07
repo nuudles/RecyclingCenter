@@ -17,7 +17,7 @@ public class RecyclingCenter<T: Recyclable>
 {
 	public typealias RecyclableType = T
 
-	// MARK: - Private properties
+	// MARK: - Internal properties
 	internal var initHandlers: [String: (context: Any?) -> (RecyclableType)] = [:]
 	internal var unusedRecyclables: [String: Set<RecyclableType>] = [:]
 

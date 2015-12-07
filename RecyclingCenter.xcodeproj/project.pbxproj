@@ -7,13 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		302908AE1C160A5800F748C4 /* RecyclingCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 303B27D61C121E5A0003795C /* RecyclingCenter.framework */; };
+		302908B41C160BAE00F748C4 /* RecyclingCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029089F1C16095A00F748C4 /* RecyclingCenterTests.swift */; };
 		303B27DA1C121E5A0003795C /* RecyclingCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 303B27D91C121E5A0003795C /* RecyclingCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		303B27E31C121E970003795C /* RecyclingCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303B27E21C121E970003795C /* RecyclingCenter.swift */; };
 		303B27E61C121EF60003795C /* RecyclingCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303B27E21C121E970003795C /* RecyclingCenter.swift */; };
 		303B27E91C121EF60003795C /* RecyclingCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 303B27D91C121E5A0003795C /* RecyclingCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		302908AF1C160A5800F748C4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 303B27CD1C121E5A0003795C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 303B27D51C121E5A0003795C;
+			remoteInfo = "RecyclingCenter-iOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		3029089F1C16095A00F748C4 /* RecyclingCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecyclingCenterTests.swift; sourceTree = "<group>"; };
+		302908A11C16095A00F748C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		302908A91C160A5800F748C4 /* RecyclingCenterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecyclingCenterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		303B27D61C121E5A0003795C /* RecyclingCenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RecyclingCenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		303B27D91C121E5A0003795C /* RecyclingCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecyclingCenter.h; sourceTree = "<group>"; };
 		303B27DB1C121E5A0003795C /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
@@ -23,6 +38,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		302908A61C160A5800F748C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				302908AE1C160A5800F748C4 /* RecyclingCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		303B27D21C121E5A0003795C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -40,11 +63,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3029089E1C16095A00F748C4 /* RecyclingCenterTests */ = {
+			isa = PBXGroup;
+			children = (
+				3029089F1C16095A00F748C4 /* RecyclingCenterTests.swift */,
+				302908A11C16095A00F748C4 /* Info.plist */,
+			);
+			path = RecyclingCenterTests;
+			sourceTree = "<group>";
+		};
 		303B27CC1C121E5A0003795C = {
 			isa = PBXGroup;
 			children = (
 				303B27E11C121E970003795C /* Source */,
 				303B27D81C121E5A0003795C /* RecyclingCenter */,
+				3029089E1C16095A00F748C4 /* RecyclingCenterTests */,
 				303B27D71C121E5A0003795C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +87,7 @@
 			children = (
 				303B27D61C121E5A0003795C /* RecyclingCenter.framework */,
 				303B27EE1C121EF60003795C /* RecyclingCenter.framework */,
+				302908A91C160A5800F748C4 /* RecyclingCenterTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -98,6 +132,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		302908A81C160A5800F748C4 /* RecyclingCenterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 302908B11C160A5800F748C4 /* Build configuration list for PBXNativeTarget "RecyclingCenterTests" */;
+			buildPhases = (
+				302908A51C160A5800F748C4 /* Sources */,
+				302908A61C160A5800F748C4 /* Frameworks */,
+				302908A71C160A5800F748C4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				302908B01C160A5800F748C4 /* PBXTargetDependency */,
+			);
+			name = RecyclingCenterTests;
+			productName = RecyclingCenterTests;
+			productReference = 302908A91C160A5800F748C4 /* RecyclingCenterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		303B27D51C121E5A0003795C /* RecyclingCenter-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 303B27DE1C121E5A0003795C /* Build configuration list for PBXNativeTarget "RecyclingCenter-iOS" */;
@@ -140,9 +192,13 @@
 		303B27CD1C121E5A0003795C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Nuudles;
 				TargetAttributes = {
+					302908A81C160A5800F748C4 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
 					303B27D51C121E5A0003795C = {
 						CreatedOnToolsVersion = 7.1.1;
 					};
@@ -162,11 +218,19 @@
 			targets = (
 				303B27D51C121E5A0003795C /* RecyclingCenter-iOS */,
 				303B27E41C121EF60003795C /* RecyclingCenter-tvOS */,
+				302908A81C160A5800F748C4 /* RecyclingCenterTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		302908A71C160A5800F748C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		303B27D41C121E5A0003795C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,6 +248,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		302908A51C160A5800F748C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				302908B41C160BAE00F748C4 /* RecyclingCenterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		303B27D11C121E5A0003795C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -202,7 +274,35 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		302908B01C160A5800F748C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 303B27D51C121E5A0003795C /* RecyclingCenter-iOS */;
+			targetProxy = 302908AF1C160A5800F748C4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		302908B21C160A5800F748C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = RecyclingCenterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nuudles.RecyclingCenterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		302908B31C160A5800F748C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = RecyclingCenterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nuudles.RecyclingCenterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		303B27DC1C121E5A0003795C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -369,6 +469,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		302908B11C160A5800F748C4 /* Build configuration list for PBXNativeTarget "RecyclingCenterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				302908B21C160A5800F748C4 /* Debug */,
+				302908B31C160A5800F748C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		303B27D01C121E5A0003795C /* Build configuration list for PBXProject "RecyclingCenter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
