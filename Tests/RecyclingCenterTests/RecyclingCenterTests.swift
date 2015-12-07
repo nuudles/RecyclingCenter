@@ -115,7 +115,7 @@ class RecyclingCenterTests: XCTestCase {
 	}
 	// A registered initHandler should initialize objects based on the dequeue context.
 	func testInitHandlerContextualDequeue() {
-		let identifier = "ARBITRARY", glassContext = "GLASS_CONTEXT", plasticContext = "PLASTIC_CONTEXT"
+		let identifier = "SINGLE_STREAM", glassContext = "GLASS_CONTEXT", plasticContext = "PLASTIC_CONTEXT"
 		testRecyclingCenter.registerInitHandler({ (context: Any?) -> RecyclableMaterial in
 			if (context as? String) == glassContext {
 				return Glass()
