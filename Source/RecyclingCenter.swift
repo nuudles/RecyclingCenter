@@ -6,7 +6,7 @@
 //  Copyright © 2015 Nuudles. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public protocol Recyclable: Hashable
 {
@@ -18,8 +18,8 @@ public class RecyclingCenter<T: Recyclable>
 	public typealias RecyclableType = T
 
 	// MARK: - Private properties
-	private var initHandlers: [String: (context: Any?) -> (RecyclableType)] = [:]
-	private var unusedRecyclables: [String: Set<RecyclableType>] = [:]
+	internal var initHandlers: [String: (context: Any?) -> (RecyclableType)] = [:]
+	internal var unusedRecyclables: [String: Set<RecyclableType>] = [:]
 
 	// MARK: - Init methods
 	public init()
