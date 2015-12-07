@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "303B27E41C121EF60003795C"
-               BuildableName = "RecyclingCenter-tvOS.framework"
+               BuildableName = "RecyclingCenter.framework"
                BlueprintName = "RecyclingCenter-tvOS"
                ReferencedContainer = "container:RecyclingCenter.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "303B27E41C121EF60003795C"
-            BuildableName = "RecyclingCenter-tvOS.framework"
+            BuildableName = "RecyclingCenter.framework"
             BlueprintName = "RecyclingCenter-tvOS"
             ReferencedContainer = "container:RecyclingCenter.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "303B27E41C121EF60003795C"
-            BuildableName = "RecyclingCenter-tvOS.framework"
+            BuildableName = "RecyclingCenter.framework"
             BlueprintName = "RecyclingCenter-tvOS"
             ReferencedContainer = "container:RecyclingCenter.xcodeproj">
          </BuildableReference>
