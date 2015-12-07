@@ -8,17 +8,24 @@
 
 import UIKit
 
+/// A protocol that describes items which can be recycled in the `RecyclingCenter`
 public protocol Recyclable: Hashable
 {
 	
 }
 
+/// `RecyclingCenter` is a simple manager that handles dequeuing and enqueuing reused objects.
+/// It works similar to how `UITableView` and `UICollectionView` dequeue their cells.
+/// Instead of registering a class, you register an `initHandler` closure, which returns an instance of your `Recyclable` class.
+///
 public class RecyclingCenter<T: Recyclable>
 {
 	public typealias RecyclableType = T
 
 	// MARK: - Internal properties
+	/// A dictionary of `initHandler`s keyed by their respective `reuseIdentifier`s
 	internal var initHandlers: [String: (context: Any?) -> (RecyclableType)] = [:]
+	/// A dictionary of a set of `Recyclable` objects that are ready to be reused keyed by their respective `reuseIdentifier`s
 	internal var unusedRecyclables: [String: Set<RecyclableType>] = [:]
 
 	// MARK: - Init methods
@@ -41,18 +48,35 @@ public class RecyclingCenter<T: Recyclable>
 	}
 
 	// MARK: - Public methods
+	/// Registers a closure that instantiates a `Recyclable` object based on an optional `context` for a specific `reuseIdentifier`
+	///
+	/// - parameter initHandler: The closure, which takes in an optional `context` and returns an instantiated `Recyclable` object
+	/// - parameter reuseIdentifier: The `reuseIdentifier` with which to associate the `initHandler`
+	///
 	public func registerInitHandler(initHandler: (context: Any?) -> (RecyclableType), forReuseIdentifier reuseIdentifier: String)
 	{
 		initHandlers[reuseIdentifier] = initHandler
 		unusedRecyclables[reuseIdentifier] = Set<RecyclableType>()
 	}
 
+	/// Deregisters an `initHandler` closure for the given `reuseIdentifier`
+	///
+	/// - parameter reuseIdentifier: The `reuseIdentifier` whose `initHandler` should be deregistered
+	///
 	public func deregisterInitHandlerForReuseIdentifier(reuseIdentifier: String)
 	{
 		initHandlers[reuseIdentifier] = nil
 		unusedRecyclables[reuseIdentifier] = nil
 	}
 
+	/// Dequeues a `Recyclable` object with a given `reuseIdentifier` and `context`.
+	/// This method will return a recycled object if one is available, otherwise it uses the `initHandler` closure associated with
+	/// the `reuseIdentifier` to instantiate a new `Recyclable` object based on the provided `context`
+	///
+	/// - parameter reuseIdentifier: The `reuseIdentifier` to dequeue
+	/// - parameter context: An optional `context` that can be provided to the `initHandler`
+	/// - returns: An instantiated `Recyclable` based on the `reuseIdentifier` and `context`
+	///
 	public func dequeueObjectWithReuseIdentifier(reuseIdentifier: String, context: Any? = nil) -> RecyclableType
 	{
 		guard unusedRecyclables[reuseIdentifier] != nil else { fatalError("Unknown reuseIdentifier: \(reuseIdentifier)") }
@@ -66,6 +90,11 @@ public class RecyclingCenter<T: Recyclable>
 		return object
 	}
 
+	/// Enqueue a `Recyclable` object for later reuse
+	///
+	/// - parameter object: The `Recyclable` object that should be enqueued
+	/// - parameter reuseIdentifier: The `reuseIdentifier` to enqueue the object with
+	///
 	public func enqueueObject(object: RecyclableType, withReuseIdentifier reuseIdentifier: String)
 	{
 		guard unusedRecyclables[reuseIdentifier] != nil else { fatalError("Unknown reuseIdentifier: \(reuseIdentifier)") }

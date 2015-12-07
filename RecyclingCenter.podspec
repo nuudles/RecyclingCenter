@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'RecyclingCenter'
-  s.version = '0.0.3'
+  s.version = '0.0.4'
   s.license = 'MIT'
   s.summary = 'A simple manager to handle recycled and reused objects'
   s.homepage = 'https://github.com/nuudles/RecyclingCenter'
