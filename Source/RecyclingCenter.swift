@@ -14,6 +14,12 @@ public protocol Recyclable: Hashable
 	
 }
 
+public enum RecyclingCenterError: ErrorType
+{
+	case UnknownReuseIdentifier(reuseIdentifier: String)
+	case NoInitHandlerForReuseIdentifier(reuseIdentifier: String)
+}
+
 /// `RecyclingCenter` is a simple manager that handles dequeuing and enqueuing reused objects.
 /// It works similar to how `UITableView` and `UICollectionView` dequeue their cells.
 /// Instead of registering a class, you register an `initHandler` closure, which returns an instance of your `Recyclable` class.
@@ -77,15 +83,16 @@ public class RecyclingCenter<T: Recyclable>
 	/// - parameter context: An optional `context` that can be provided to the `initHandler`
 	/// - returns: An instantiated `Recyclable` based on the `reuseIdentifier` and `context`
 	///
-	public func dequeueObjectWithReuseIdentifier(reuseIdentifier: String, context: Any? = nil) -> RecyclableType
+	public func dequeueObjectWithReuseIdentifier(reuseIdentifier: String, context: Any? = nil) throws -> RecyclableType
 	{
-		guard unusedRecyclables[reuseIdentifier] != nil else { fatalError("Unknown reuseIdentifier: \(reuseIdentifier)") }
+		guard unusedRecyclables[reuseIdentifier] != nil else { throw RecyclingCenterError.UnknownReuseIdentifier(reuseIdentifier: reuseIdentifier) }
 		if let object = unusedRecyclables[reuseIdentifier]!.popFirst()
 		{
 			return object
 		}
 
-		guard let initHandler = initHandlers[reuseIdentifier] else { fatalError("Could not find initHandler for reuseIdentifier: \(reuseIdentifier)") }
+		guard let initHandler = initHandlers[reuseIdentifier] else { throw RecyclingCenterError.NoInitHandlerForReuseIdentifier(reuseIdentifier: reuseIdentifier
+			) }
 		let object = initHandler(context: context)
 		return object
 	}
@@ -95,9 +102,9 @@ public class RecyclingCenter<T: Recyclable>
 	/// - parameter object: The `Recyclable` object that should be enqueued
 	/// - parameter reuseIdentifier: The `reuseIdentifier` to enqueue the object with
 	///
-	public func enqueueObject(object: RecyclableType, withReuseIdentifier reuseIdentifier: String)
+	public func enqueueObject(object: RecyclableType, withReuseIdentifier reuseIdentifier: String) throws
 	{
-		guard unusedRecyclables[reuseIdentifier] != nil else { fatalError("Unknown reuseIdentifier: \(reuseIdentifier)") }
+		guard unusedRecyclables[reuseIdentifier] != nil else { throw RecyclingCenterError.UnknownReuseIdentifier(reuseIdentifier: reuseIdentifier) }
 		unusedRecyclables[reuseIdentifier]!.insert(object)
 	}
 }
