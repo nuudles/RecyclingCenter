@@ -104,17 +104,36 @@ class RecyclingCenterTests: XCTestCase {
 		testRecyclingCenter.registerInitHandler({ (context: Any?) -> RecyclableMaterial in
 			return input
 			}, forReuseIdentifier: input.identifier)
-		testRecyclingCenter.enqueueObject(input, withReuseIdentifier: input.identifier)
-		XCTAssert(testRecyclingCenter.unusedRecyclables[input.identifier]?.popFirst() == input)
+		do {
+			try testRecyclingCenter.enqueueObject(input, withReuseIdentifier: input.identifier)
+			XCTAssert(testRecyclingCenter.unusedRecyclables[input.identifier]?.popFirst() == input)
+		}
+		catch let error {
+			XCTFail("\(error)")
+		}
 	}
 
 	/// Enqueue
 	/// An object must be registered for a reuse identifier before it is enqueued.
-	/// TODO: Complete this test by declaring the possibility of an exception in `enqueueObject(_:,_:)`
 	func testPrematureEnqueueFailure() {
-		//		let input = Glass()
-		//		testRecyclingCenter.enqueueObject(input, withReuseIdentifier: input.identifier)
-		XCTFail()
+		let input = Glass()
+		do {
+			try testRecyclingCenter.enqueueObject(input, withReuseIdentifier: input.identifier)
+			XCTFail()
+		}
+		catch let error {
+			guard let recyclingError = error as? RecyclingCenterError else {
+				XCTFail("\(error)")
+				return
+			}
+			
+			switch recyclingError {
+			case .UnknownReuseIdentifier(reuseIdentifier: let reuseIdentifier):
+				XCTAssert(reuseIdentifier == input.identifier)
+			default:
+				XCTFail("\(error)")
+			}
+		}
 	}
 
 	// MARK: - Dequeue -
@@ -124,8 +143,13 @@ class RecyclingCenterTests: XCTestCase {
 		testRecyclingCenter.registerInitHandler({ (context: Any?) -> RecyclableMaterial in
 			return input
 			}, forReuseIdentifier: input.identifier)
-		let output = testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier)
-		XCTAssert(input == output)
+		do {
+			let output = try testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier)
+			XCTAssert(input == output)
+		}
+		catch let error {
+			XCTFail("\(error)")
+		}
 	}
 
 	// A registered initHandler should initialize objects based on the dequeue context.
@@ -140,9 +164,14 @@ class RecyclingCenterTests: XCTestCase {
 				return Paper()
 			}
 			}, forReuseIdentifier: identifier)
-		let glass = testRecyclingCenter.dequeueObjectWithReuseIdentifier(identifier, context: glassContext)
-		let plastic = testRecyclingCenter.dequeueObjectWithReuseIdentifier(identifier, context: plasticContext)
-		XCTAssert(glass as? Glass != nil && plastic as? Plastic != nil)
+		do {
+			let glass = try testRecyclingCenter.dequeueObjectWithReuseIdentifier(identifier, context: glassContext)
+			let plastic = try testRecyclingCenter.dequeueObjectWithReuseIdentifier(identifier, context: plasticContext)
+			XCTAssert(glass as? Glass != nil && plastic as? Plastic != nil)
+		}
+		catch let error {
+			XCTFail("\(error)")
+		}
 	}
 
 	/// An object initialized through a registered initHandler should be repeatedly dequeueable.
@@ -151,21 +180,40 @@ class RecyclingCenterTests: XCTestCase {
 		testRecyclingCenter.registerInitHandler({ (context: Any?) -> RecyclableMaterial in
 			return input
 			}, forReuseIdentifier: input.identifier)
-		let results = [
-			testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier),
-			testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier),
-			testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier)
-		]
-		for object in results {
-			XCTAssert(input == object)
+		do {
+			let results = [
+				try testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier),
+				try testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier),
+				try testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier)
+			]
+			for object in results {
+				XCTAssert(input == object)
+			}
+		}
+		catch let error {
+			XCTFail("\(error)")
 		}
 	}
 
 	/// An initHandler must be registered for a reuse identifier before an object may be dequeued.
-	/// TODO: Complete this test by declaring the possibility of an exception in `dequeueObjectWithReuseIdentifier(_:,_:)`
 	func testPrematureDInitHandlerDequeueFailure() {
-		//		let material = testRecyclingCenter.dequeueObjectWithReuseIdentifier(ReuseIdentifier.Unknown.rawValue)
-		XCTFail()
+		do {
+			let _ = try testRecyclingCenter.dequeueObjectWithReuseIdentifier(ReuseIdentifier.Unknown.rawValue)
+			XCTFail()
+		}
+		catch let error {
+			guard let recyclingError = error as? RecyclingCenterError else {
+				XCTFail("\(error)")
+				return
+			}
+
+			switch recyclingError {
+			case .UnknownReuseIdentifier(reuseIdentifier: let reuseIdentifier):
+				XCTAssert(reuseIdentifier == ReuseIdentifier.Unknown.rawValue)
+			default:
+				XCTFail("\(error)")
+			}
+		}
 	}
 
 	/// An enqueued object should be dequeueable.
@@ -175,9 +223,14 @@ class RecyclingCenterTests: XCTestCase {
 		testRecyclingCenter.registerInitHandler({ (context: Any?) -> RecyclableMaterial in
 			return initHandlerResponse
 			}, forReuseIdentifier: input.identifier)
-		testRecyclingCenter.enqueueObject(input, withReuseIdentifier: input.identifier)
-		let result = testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier)
-		XCTAssert(input == result)
+		do {
+			try testRecyclingCenter.enqueueObject(input, withReuseIdentifier: input.identifier)
+			let result = try testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier)
+			XCTAssert(input == result)
+		}
+		catch let error {
+			XCTFail("\(error)")
+		}
 	}
 
 	/// An enqueued object should be repeatedly dequeueable.
@@ -187,19 +240,24 @@ class RecyclingCenterTests: XCTestCase {
 		testRecyclingCenter.registerInitHandler({ (context: Any?) -> RecyclableMaterial in
 			return initHandlerResponse
 			}, forReuseIdentifier: input.identifier)
-		testRecyclingCenter.enqueueObject(input, withReuseIdentifier: input.identifier)
-		let results = [
-			testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier),
-			testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier),
-			testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier)
-		]
-		let expectations = [
-			input,
-			initHandlerResponse,
-			initHandlerResponse
-		]
-		for (result, expectation) in zip(results, expectations) {
-			XCTAssert(result == expectation)
+		do {
+			try testRecyclingCenter.enqueueObject(input, withReuseIdentifier: input.identifier)
+			let results = [
+				try testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier),
+				try testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier),
+				try testRecyclingCenter.dequeueObjectWithReuseIdentifier(input.identifier)
+			]
+			let expectations = [
+				input,
+				initHandlerResponse,
+				initHandlerResponse
+			]
+			for (result, expectation) in zip(results, expectations) {
+				XCTAssert(result == expectation)
+			}
+		}
+		catch let error {
+			XCTFail("\(error)")
 		}
 	}
 }
