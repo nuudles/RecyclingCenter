@@ -32,17 +32,17 @@ class ViewController: UIViewController
 		super.viewDidLoad()
 
 		navigationItem.rightBarButtonItems = [
-			UIBarButtonItem(title: "+Red", style: .Plain, target: self, action: Selector("addRed")),
-			UIBarButtonItem(title: "-Red", style: .Plain, target: self, action: Selector("deleteRed")),
-			UIBarButtonItem(title: "+Blue", style: .Plain, target: self, action: Selector("addBlue")),
-			UIBarButtonItem(title: "-Blue", style: .Plain, target: self, action: Selector("deleteBlue"))
+			UIBarButtonItem(title: "+Red", style: .Plain, target: self, action: #selector(ViewController.addRed)),
+			UIBarButtonItem(title: "-Red", style: .Plain, target: self, action: #selector(ViewController.deleteRed)),
+			UIBarButtonItem(title: "+Blue", style: .Plain, target: self, action: #selector(ViewController.addBlue)),
+			UIBarButtonItem(title: "-Blue", style: .Plain, target: self, action: #selector(ViewController.deleteBlue))
 		]
 	}
 
 	// MARK: - Button action methods
 	func addRed()
 	{
-		let redView = recyclingCenter.dequeueObjectWithReuseIdentifier(ViewController.redReuseIdentifier, context: nil)
+		let redView = try! recyclingCenter.dequeueObjectWithReuseIdentifier(ViewController.redReuseIdentifier, context: nil)
 		redViews.append(redView)
 
 		redView.center = CGPoint(x: CGFloat(arc4random_uniform(UInt32(view.bounds.size.width))), y: CGFloat(arc4random_uniform(UInt32(view.bounds.size.height))))
@@ -51,7 +51,7 @@ class ViewController: UIViewController
 
 	func addBlue()
 	{
-		let blueView = recyclingCenter.dequeueObjectWithReuseIdentifier(ViewController.blueReuseIdentifier, context: nil)
+		let blueView = try! recyclingCenter.dequeueObjectWithReuseIdentifier(ViewController.blueReuseIdentifier, context: nil)
 		blueViews.append(blueView)
 
 		blueView.center = CGPoint(x: CGFloat(arc4random_uniform(UInt32(view.bounds.size.width))), y: CGFloat(arc4random_uniform(UInt32(view.bounds.size.height))))
@@ -64,7 +64,7 @@ class ViewController: UIViewController
 
 		let redView = redViews.removeFirst()
 		redView.removeFromSuperview()
-		recyclingCenter.enqueueObject(redView, withReuseIdentifier: ViewController.redReuseIdentifier)
+		try! recyclingCenter.enqueueObject(redView, withReuseIdentifier: ViewController.redReuseIdentifier)
 	}
 
 	func deleteBlue()
@@ -73,7 +73,7 @@ class ViewController: UIViewController
 
 		let blueView = blueViews.removeFirst()
 		blueView.removeFromSuperview()
-		recyclingCenter.enqueueObject(blueView, withReuseIdentifier: ViewController.blueReuseIdentifier)
+		try! recyclingCenter.enqueueObject(blueView, withReuseIdentifier: ViewController.blueReuseIdentifier)
 	}
 }
 

@@ -1,5 +1,5 @@
 PODS:
-  - RecyclingCenter (0.0.1)
+  - RecyclingCenter (0.0.5)
 
 DEPENDENCIES:
   - RecyclingCenter (from `../`)
@@ -9,6 +9,6 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  RecyclingCenter: e98abba2fc0c2b6f120995f0c02d4d5847122f2e
+  RecyclingCenter: 32b9a2a2e6a2fc166d5cf1eb75971d4a635a12f3
 
 COCOAPODS: 0.39.0
