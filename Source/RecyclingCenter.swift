@@ -9,15 +9,13 @@
 import UIKit
 
 /// A protocol that describes items which can be recycled in the `RecyclingCenter`
-public protocol Recyclable: Hashable
-{
+public protocol Recyclable: Hashable {
 	
 }
 
-public enum RecyclingCenterError: ErrorType
-{
-	case UnknownReuseIdentifier(reuseIdentifier: String)
-	case NoInitHandlerForReuseIdentifier(reuseIdentifier: String)
+public enum RecyclingCenterError: Error {
+	case unknown(reuseIdentifier: String)
+	case noInitHandler(reuseIdentifier: String)
 }
 
 /// `RecyclingCenter` is a simple manager that handles dequeuing and enqueuing reused objects.
@@ -28,29 +26,33 @@ public class RecyclingCenter<T: Recyclable>
 {
 	public typealias RecyclableType = T
 
+	// MARK: - Private properties
+	private var observer: NSObjectProtocol?
+
 	// MARK: - Internal properties
 	/// A dictionary of `initHandler`s keyed by their respective `reuseIdentifier`s
-	internal var initHandlers: [String: (context: Any?) -> (RecyclableType)] = [:]
+	internal var initHandlers: [String: (Any?) -> (RecyclableType)] = [:]
 	/// A dictionary of a set of `Recyclable` objects that are ready to be reused keyed by their respective `reuseIdentifier`s
 	internal var unusedRecyclables: [String: Set<RecyclableType>] = [:]
 
 	// MARK: - Init methods
-	public init()
-	{
-		NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidReceiveMemoryWarningNotification, object: nil, queue: nil)
-		{
-			[unowned self]
-			(_) in
-			for key in self.unusedRecyclables.keys
-			{
-				self.unusedRecyclables[key]!.removeAll()
-			}
-		}
+	public init() {
+		observer = NotificationCenter
+			.default
+			.addObserver(
+				forName: UIApplication.didReceiveMemoryWarningNotification,
+				object: nil,
+				queue: nil) { [weak self] (_) in
+					self?.unusedRecyclables.keys.forEach { (key) in
+						self?.unusedRecyclables[key]?.removeAll()
+					}
+				}
 	}
 
-	deinit
-	{
-		NSNotificationCenter.defaultCenter().removeObserver(self)
+	deinit {
+		if let observer = observer {
+			NotificationCenter.default.removeObserver(observer)
+		}
 	}
 
 	// MARK: - Public methods
@@ -59,8 +61,7 @@ public class RecyclingCenter<T: Recyclable>
 	/// - parameter initHandler: The closure, which takes in an optional `context` and returns an instantiated `Recyclable` object
 	/// - parameter reuseIdentifier: The `reuseIdentifier` with which to associate the `initHandler`
 	///
-	public func registerInitHandler(initHandler: (context: Any?) -> (RecyclableType), forReuseIdentifier reuseIdentifier: String)
-	{
+	public func register(initHandler: @escaping (Any?) -> (RecyclableType), for reuseIdentifier: String) {
 		initHandlers[reuseIdentifier] = initHandler
 		unusedRecyclables[reuseIdentifier] = Set<RecyclableType>()
 	}
@@ -69,8 +70,7 @@ public class RecyclingCenter<T: Recyclable>
 	///
 	/// - parameter reuseIdentifier: The `reuseIdentifier` whose `initHandler` should be deregistered
 	///
-	public func deregisterInitHandlerForReuseIdentifier(reuseIdentifier: String)
-	{
+	public func deregisterInitHandler(for reuseIdentifier: String) {
 		initHandlers[reuseIdentifier] = nil
 		unusedRecyclables[reuseIdentifier] = nil
 	}
@@ -83,17 +83,18 @@ public class RecyclingCenter<T: Recyclable>
 	/// - parameter context: An optional `context` that can be provided to the `initHandler`
 	/// - returns: An instantiated `Recyclable` based on the `reuseIdentifier` and `context`
 	///
-	public func dequeueObjectWithReuseIdentifier(reuseIdentifier: String, context: Any? = nil) throws -> RecyclableType
-	{
-		guard unusedRecyclables[reuseIdentifier] != nil else { throw RecyclingCenterError.UnknownReuseIdentifier(reuseIdentifier: reuseIdentifier) }
-		if let object = unusedRecyclables[reuseIdentifier]!.popFirst()
-		{
+	public func dequeueObject(with reuseIdentifier: String, context: Any? = nil) throws -> RecyclableType {
+		guard unusedRecyclables[reuseIdentifier] != nil
+			else { throw RecyclingCenterError.unknown(reuseIdentifier: reuseIdentifier) }
+
+		if let object = unusedRecyclables[reuseIdentifier]?.popFirst() {
 			return object
 		}
 
-		guard let initHandler = initHandlers[reuseIdentifier] else { throw RecyclingCenterError.NoInitHandlerForReuseIdentifier(reuseIdentifier: reuseIdentifier
-			) }
-		let object = initHandler(context: context)
+		guard let initHandler = initHandlers[reuseIdentifier]
+				else { throw RecyclingCenterError.noInitHandler(reuseIdentifier: reuseIdentifier) }
+
+		let object = initHandler(context)
 		return object
 	}
 
@@ -102,9 +103,9 @@ public class RecyclingCenter<T: Recyclable>
 	/// - parameter object: The `Recyclable` object that should be enqueued
 	/// - parameter reuseIdentifier: The `reuseIdentifier` to enqueue the object with
 	///
-	public func enqueueObject(object: RecyclableType, withReuseIdentifier reuseIdentifier: String) throws
-	{
-		guard unusedRecyclables[reuseIdentifier] != nil else { throw RecyclingCenterError.UnknownReuseIdentifier(reuseIdentifier: reuseIdentifier) }
-		unusedRecyclables[reuseIdentifier]!.insert(object)
+	public func enqueue(object: RecyclableType, with reuseIdentifier: String) throws {
+		guard unusedRecyclables[reuseIdentifier] != nil
+			else { throw RecyclingCenterError.unknown(reuseIdentifier: reuseIdentifier) }
+		unusedRecyclables[reuseIdentifier]?.insert(object)
 	}
 }
